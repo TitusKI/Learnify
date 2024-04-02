@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learnify/app_bloc.dart';
 import 'package:learnify/app_event.dart';
 import 'package:learnify/app_state.dart';
+import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
+import 'package:learnify/pages/welcome/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,15 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => AppBloc(),
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        ));
+      create: (context) => WelcomeBloc(),
+      child: ScreenUtilInit(
+        builder: (context, child) => const MaterialApp(
+          home: Welcome(),
+        ),
+      ),
+    );
   }
 }
 
@@ -81,22 +82,23 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
 
-        // Use of 
-        child: BlocBuilder<AppBloc, AppState> (builder: (context, state){
-          return Column(
-         
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-             '${BlocProvider.of<AppBloc>(context).state.counter}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        );
-        },),
+        // Use of
+        child: BlocBuilder<AppBloc, AppState>(
+          builder: (context, state) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '${BlocProvider.of<AppBloc>(context).state.counter}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => BlocProvider.of<AppBloc>(context).add(Increment()),

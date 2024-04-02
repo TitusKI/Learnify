@@ -1,7 +1,11 @@
+
+
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
@@ -13,53 +17,67 @@ class Welcome extends StatefulWidget {
 class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.only(top: 34.h),
-          width: 375.w,
-          child: Stack(
-            children: [
-              PageView(
-                children: [
-                  _page(
-                      1,
-                      context,
-                      'Next',
-                      "First See Learning",
-                      "Forget about a for of paper all knowledhe in one learning",
-                      "Image One"),
-                  _page(
-                      2,
-                      context,
-                      'Next',
-                      "Connect With Everyone",
-                      "Always keep in touch with your tutor & friend. Let's get connected",
-                      "Image One"),
-                  _page(
-                      3,
-                      context,
-                      'Get Started',
-                      "Always Fascinated Learning",
-                      "Anywhere, anytime. The time is at your discretion so study whenever you want",
-                      "Image One"),
-                ],
-              ),
-              Positioned(
-                bottom: 100.h,
-                child: DotsIndicator(
-                  dotsCount: 3,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  decorator: DotsDecorator(
-                      activeColor: Colors.blue,
-                      color: Colors.grey,
-                      size: const Size.square(8.0),
-                      activeSize: const Size(10.0, 8.0),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0))),
+    return BlocProvider(
+      create: (context) => WelcomeBloc(),
+      child: Container(
+        child: Scaffold(
+          body: BlocBuilder<WelcomeBloc, WelcomeState>(
+            builder: (context, state) {
+              return Container(
+                margin: EdgeInsets.only(top: 34.h),
+                width: 375.w,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    PageView(
+                      onPageChanged: (index) {
+                        state.page = index;
+                        BlocProvider.of<WelcomeBloc>(context)
+                            .add(WelcomeEvent());
+                      },
+                      children: [
+                        _page(
+                            1,
+                            context,
+                            'Next',
+                            "First See Learning",
+                            "Forget about a for of paper all knowledhe in one learning",
+                            "Image One"),
+                        _page(
+                            2,
+                            context,
+                            'Next',
+                            "Connect With Everyone",
+                            "Always keep in touch with your tutor & friend. Let's get connected",
+                            "Image One"),
+                        _page(
+                            3,
+                            context,
+                            'Get Started',
+                            "Always Fascinated Learning",
+                            "Anywhere, anytime. The time is at your discretion so study whenever you want",
+                            "Image One"),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 100.h,
+                      child: DotsIndicator(
+                        position: state.page,
+                        dotsCount: 3,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        decorator: DotsDecorator(
+                            activeColor: Colors.blue,
+                            color: Colors.grey,
+                            size: const Size.square(8.0),
+                            activeSize: const Size(10.0, 8.0),
+                            activeShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -91,7 +109,7 @@ class _WelcomeState extends State<Welcome> {
             subtitle,
             style: TextStyle(
               color: Colors.black.withOpacity(0.5),
-              fontSize: 25.sp,
+              fontSize: 15.sp,
               fontWeight: FontWeight.normal,
             ),
           ),
@@ -122,7 +140,7 @@ class _WelcomeState extends State<Welcome> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
