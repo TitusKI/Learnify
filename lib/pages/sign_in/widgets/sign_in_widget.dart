@@ -60,3 +60,24 @@ Widget reusableText(String text) {
     ),
   );
 }
+
+Widget buildTextField(String text, String textType) {
+  return Container(
+    // height and width of the textfield
+    width: 325.w,
+    height: 50.h,
+    decoration: BoxDecoration(
+      color: Colors.red,
+      borderRadius: BorderRadius.all(
+        Radius.circular(15.w),
+        
+      ),
+      border: Border.all(color: Colors.black),
+    ),
+    child: Row(
+      children: [
+        Container(  )
+      ],
+    ),
+  );
+}
