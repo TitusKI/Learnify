@@ -1,9 +1,12 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learnify/app_bloc.dart';
 import 'package:learnify/app_event.dart';
 import 'package:learnify/app_state.dart';
+import 'package:learnify/pages/sign_in/sign_in.dart';
 import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
 import 'package:learnify/pages/welcome/welcome.dart';
 
@@ -17,11 +20,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => WelcomeBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          
+          create: (context) => WelcomeBloc(),
+        ),
+        BlocProvider(
+          // lazy: false indicates that create this bloc as soon as possible  
+          // lazy: false,
+          create: (context) => AppBloc(),
+        )
+      ],
       child: ScreenUtilInit(
-        builder: (context, child) => const MaterialApp(
-          home: Welcome(),
+        builder: (context, child) =>  MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: const Welcome(),
+          routes: {
+            "myHomePage":(context)=> const MyHomePage(),
+            "signIn":(context)=> const SignIn()
+          }
         ),
       ),
     );
@@ -29,7 +47,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,8 +57,6 @@ class MyHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Flutter Home Page'),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

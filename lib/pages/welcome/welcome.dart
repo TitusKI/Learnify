@@ -1,10 +1,9 @@
-
-
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:learnify/main.dart';
 import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
 
 class Welcome extends StatefulWidget {
@@ -15,6 +14,7 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  PageController pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -30,6 +30,7 @@ class _WelcomeState extends State<Welcome> {
                   alignment: Alignment.topCenter,
                   children: [
                     PageView(
+                      controller: pageController,
                       onPageChanged: (index) {
                         state.page = index;
                         BlocProvider.of<WelcomeBloc>(context)
@@ -42,25 +43,25 @@ class _WelcomeState extends State<Welcome> {
                             'Next',
                             "First See Learning",
                             "Forget about a for of paper all knowledhe in one learning",
-                            "Image One"),
+                            "assets/images/reading.png"),
                         _page(
                             2,
                             context,
                             'Next',
                             "Connect With Everyone",
                             "Always keep in touch with your tutor & friend. Let's get connected",
-                            "Image One"),
+                            "assets/images/boy.png"),
                         _page(
                             3,
                             context,
                             'Get Started',
                             "Always Fascinated Learning",
                             "Anywhere, anytime. The time is at your discretion so study whenever you want",
-                            "Image One"),
+                            "assets/images/man.png"),
                       ],
                     ),
                     Positioned(
-                      bottom: 100.h,
+                      bottom: 80.h,
                       child: DotsIndicator(
                         position: state.page,
                         dotsCount: 3,
@@ -69,7 +70,7 @@ class _WelcomeState extends State<Welcome> {
                             activeColor: Colors.blue,
                             color: Colors.grey,
                             size: const Size.square(8.0),
-                            activeSize: const Size(10.0, 8.0),
+                            activeSize: const Size(15.0, 8.0),
                             activeShape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0))),
                       ),
@@ -91,7 +92,7 @@ class _WelcomeState extends State<Welcome> {
         SizedBox(
           width: 345.w,
           height: 345.w,
-          child: Text("Image One"),
+          child: Image.asset(imagePath),
         ),
         Container(
             child: Text(
@@ -130,13 +131,29 @@ class _WelcomeState extends State<Welcome> {
               ),
             ],
           ),
-          child: Center(
-            child: Text(
-              "Next",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.normal,
+          child: GestureDetector(
+            onTap: () {
+              if (index < 3) {
+                pageController.animateToPage(index,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              } else {
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const MyHomePage(),
+                //   ),
+                // );
+                Navigator.of(context).pushNamedAndRemoveUntil("signIn", (route) => false);
+              }
+            },
+            child: Center(
+              child: Text(
+                buttonName,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             ),
           ),
