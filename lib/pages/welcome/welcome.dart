@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:learnify/common/values/colors.dart';
 import 'package:learnify/main.dart';
 import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
 
@@ -67,8 +68,8 @@ class _WelcomeState extends State<Welcome> {
                         dotsCount: 3,
                         mainAxisAlignment: MainAxisAlignment.center,
                         decorator: DotsDecorator(
-                            activeColor: Colors.blue,
-                            color: Colors.grey,
+                            activeColor: AppColors.primaryElement,
+                            color:AppColors.primaryThirdElementText,
                             size: const Size.square(8.0),
                             activeSize: const Size(15.0, 8.0),
                             activeShape: RoundedRectangleBorder(
@@ -94,11 +95,11 @@ class _WelcomeState extends State<Welcome> {
           height: 345.w,
           child: Image.asset(imagePath),
         ),
-        Container(
+      Container(
             child: Text(
           title,
           style: TextStyle(
-            color: Colors.black,
+            color: AppColors.primaryText,
             fontSize: 25.sp,
             fontWeight: FontWeight.normal,
           ),
@@ -109,7 +110,7 @@ class _WelcomeState extends State<Welcome> {
           child: Text(
             subtitle,
             style: TextStyle(
-              color: Colors.black.withOpacity(0.5),
+              color: AppColors.primarySecondaryElementText,
               fontSize: 15.sp,
               fontWeight: FontWeight.normal,
             ),
@@ -120,7 +121,7 @@ class _WelcomeState extends State<Welcome> {
           width: 325.w,
           height: 50.h,
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color:AppColors.primaryElement,
             borderRadius: BorderRadius.all(Radius.circular(15.w)),
             boxShadow: [
               BoxShadow(
