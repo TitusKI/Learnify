@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learnify/app_bloc.dart';
 import 'package:learnify/app_event.dart';
 import 'package:learnify/app_state.dart';
+import 'package:learnify/firebase_options.dart';
 import 'package:learnify/pages/sign_in/blocs/sign_in_bloc.dart';
 import 'package:learnify/pages/sign_in/sign_in.dart';
 import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
@@ -13,7 +14,7 @@ import 'package:learnify/pages/welcome/welcome.dart';
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-
+    options: DefaultFirebaseOptions.currentPlatform
   );
   runApp(const MyApp());
 }
