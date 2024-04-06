@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:learnify/pages/sign_in/blocs/sign_in_bloc.dart';
+import 'package:learnify/pages/sign_in/blocs/sign_in_event.dart';
+import 'package:learnify/pages/sign_in/blocs/sign_in_state.dart';
 import 'package:learnify/pages/sign_in/widgets/sign_in_widget.dart';
 
 class SignIn extends StatefulWidget {
@@ -12,7 +16,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BlocBuilder<SignInBloc, SignInState>(
+      builder: (context, state){
+        return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
@@ -36,13 +42,21 @@ class _SignInState extends State<SignIn> {
                         height: 5.h,
                       ),
                       buildTextField(
-                          "Enter your email address", "email", "user"),
+                          "Enter your email address", "email", "user",
+                          (value){
+                            context.read<SignInBloc>().add(EmailEvent(email: value));
+                          }
+                          ),
                       reusableText("Password"),
                       SizedBox(
                         height: 5.h,
                       ),
                       buildTextField(
-                          "Enter your password", "password", "lock"),
+                          "Enter your password", "password", "lock",
+                          (value){
+                            context.read<SignInBloc>().add(PasswordEvent(password: value));
+                          }
+                          ),
                     
                     ],
                   ),
@@ -55,6 +69,9 @@ class _SignInState extends State<SignIn> {
           ),
         ),
       ),
+    );
+  
+      }
     );
   }
 }
