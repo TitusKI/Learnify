@@ -1,4 +1,4 @@
-import 'dart:html';
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -15,28 +15,45 @@ class SignInController {
         final state = context.read<SignInBloc>().state;
         String emailAddress = state.email;
         String userPassword = state.password;
-        if (emailAddress.isEmpty) {}
-        if (userPassword.isEmpty) {}
+        if (emailAddress.isEmpty) {
+           print('email is empty');
+        }else{
+          print('email is $emailAddress');
+        }
+        if (userPassword.isEmpty) { 
+             print('password empty');
+             
+        }
         try{
           final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailAddress, password: userPassword);
 
           if(credential.user==null){
+            print("No user found");
 
           }
           if(!credential.user!.emailVerified){
+            print("The email isn't registered");
 
           }
           final user = credential.user;
           if(user!=null){
-            
+            print("User found");
+          }else{
+            print('no user');
           }
         }
-        catch(e){
-
+      on FirebaseAuthException  catch(e){
+              if(e.code == "user-not-found"){
+                print('No user found for that email.');
+              }else if(e.code == 'wrong-password'){
+                print('wrong password provided for the user');
+              }else if(e.code == 'invalid-email'){
+                print('Your email format is wrong');
+              }
         }
       }
     } catch (e) {
-
+           print(e.toString());
     }
   }
 }
