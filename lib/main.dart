@@ -5,7 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learnify/app_bloc.dart';
 import 'package:learnify/app_event.dart';
 import 'package:learnify/app_state.dart';
+import 'package:learnify/common/values/colors.dart';
 import 'package:learnify/firebase_options.dart';
+import 'package:learnify/pages/bloc_providers.dart';
+import 'package:learnify/pages/register/register.dart';
 import 'package:learnify/pages/sign_in/blocs/sign_in_bloc.dart';
 import 'package:learnify/pages/sign_in/sign_in.dart';
 import 'package:learnify/pages/welcome/blocs/bloc/welcome_bloc.dart';
@@ -26,23 +29,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => WelcomeBloc(),
-        ),
-        BlocProvider(
-          // lazy: false indicates that create this bloc as soon as possible
-          // lazy: false,
-          create: (context) => AppBloc(),
-        ),
-        BlocProvider(
-          create: (context)=> SignInBloc(),
-        ),
-      ],
+      providers: AppBlocProviders.allBlocProvider,
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              iconTheme: const IconThemeData(
+                color: AppColors.primaryText
+              ),
+
               appBarTheme: const AppBarTheme(
                 elevation: 0,
                 backgroundColor: Colors.white,
@@ -51,7 +46,8 @@ class MyApp extends StatelessWidget {
             home: const Welcome(),
             routes: {
               "myHomePage": (context) => const MyHomePage(),
-              "signIn": (context) => const SignIn()
+              "signIn": (context) => const SignIn(),
+              "register": (context)=> const Register(),
             }),
       ),
     );
