@@ -5,8 +5,8 @@ import 'package:learnify/pages/sign_in/blocs/sign_in_bloc.dart';
 import 'package:learnify/pages/sign_in/blocs/sign_in_event.dart';
 import 'package:learnify/pages/sign_in/blocs/sign_in_state.dart';
 import 'package:learnify/pages/sign_in/sign_in_controller.dart';
-import 'package:learnify/pages/sign_in/widgets/sign_in_widget.dart';
-
+// import 'package:learnify/pages/sign_in/widgets/sign_in_widget.dart';
+import 'package:learnify/pages/common_widgets.dart';
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
@@ -24,7 +24,7 @@ class _SignInState extends State<SignIn> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: buildAppBar(),
+          appBar: buildAppBar("Log In"),
           body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class _SignInState extends State<SignIn> {
                }
                ),
                buildLogInAndRegButton("Sign Up","register",(){
-                
+                Navigator.of(context).pushNamed("register");
                })
               ],
             ),
@@ -79,5 +79,6 @@ class _SignInState extends State<SignIn> {
   
       }
     );
+  
   }
 }

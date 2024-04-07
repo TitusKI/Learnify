@@ -18,13 +18,13 @@ on<PasswordEvent>(_passwordEvent);
 
   }
 void _emailEvent(EmailEvent event, Emitter<SignInState> emit){
-  print("My Email Is: ${event.email}");
+  // print("My Email Is: ${event.email}");
 
   emit(state.copyWith(email: event.email));
 
 }
 void _passwordEvent(PasswordEvent event , Emitter<SignInState> emit){
-  print("My Password is:${event.password}");
+  // print("My Password is:${event.password}");
   emit(state.copyWith(password: event.password));
 }
 
