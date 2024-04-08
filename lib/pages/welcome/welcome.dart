@@ -144,7 +144,7 @@ class _WelcomeState extends State<Welcome> {
                 //     builder: (context) => const MyHomePage(),
                 //   ),
                 // );
-                Navigator.of(context).pushNamedAndRemoveUntil("signIn", (route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil("/sign_in", (route) => false);
               }
             },
             child: Center(
