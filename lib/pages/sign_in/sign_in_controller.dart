@@ -1,8 +1,7 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learnify/common/widgets/flutter_toast.dart';
 import 'package:learnify/pages/sign_in/blocs/sign_in_bloc.dart';
 
 class SignInController {
@@ -12,48 +11,54 @@ class SignInController {
   void handleSignIn(String type) async {
     try {
       if (type == "email") {
+        // Read and access Sign In Bloc here to get the state
         final state = context.read<SignInBloc>().state;
         String emailAddress = state.email;
         String userPassword = state.password;
         if (emailAddress.isEmpty) {
-           print('email is empty');
-        }else{
-          print('email is $emailAddress');
+          toastInfo(msg: "You need to fill email address");
+          return;
         }
-        if (userPassword.isEmpty) { 
-             print('password empty');
-             
+        if (userPassword.isEmpty) {
+          toastInfo(msg: "You need to fill password");
+          return;
         }
-        try{
-          final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailAddress, password: userPassword);
+        try {
+          final credential = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+                  email: emailAddress, password: userPassword);
 
-          if(credential.user==null){
-            print("No user found");
-
+          if (credential.user == null) {
+            toastInfo(msg: "User doesn't exist");
+            return;
           }
-          if(!credential.user!.emailVerified){
-            print("The email isn't registered");
-
+          if (!credential.user!.emailVerified) {
+            toastInfo(msg: "You need to verify your email account");
+            return;
           }
           final user = credential.user;
-          if(user!=null){
-            print("User found");
-          }else{
-            print('no user');
+          if (user != null) {
+            toastInfo(msg: "User exist");
+            return;
+          } else {
+            toastInfo(msg: "You aren't registered Please Sign Up first");
+            return;
           }
-        }
-      on FirebaseAuthException  catch(e){
-              if(e.code == "user-not-found"){
-                print('No user found for that email.');
-              }else if(e.code == 'wrong-password'){
-                print('wrong password provided for the user');
-              }else if(e.code == 'invalid-email'){
-                print('Your email format is wrong');
-              }
+        } on FirebaseAuthException catch (e) {
+          if (e.code == "user-not-found") {
+            toastInfo(msg: "No User found for that email");
+            return;
+          } else if (e.code == 'wrong-password') {
+            toastInfo(msg: "Wrong password provided by You");
+            return;
+          } else if (e.code == 'invalid-email') {
+            toastInfo(msg: "Invalid email provided");
+            return;
+          }
         }
       }
     } catch (e) {
-           print(e.toString());
+      print(e.toString());
     }
   }
 }
