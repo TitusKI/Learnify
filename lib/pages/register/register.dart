@@ -3,6 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:learnify/pages/common_widgets.dart';
+import 'package:learnify/pages/register/bloc/register_bloc.dart';
+import 'package:learnify/pages/register/bloc/register_event.dart';
+import 'package:learnify/pages/register/bloc/register_state.dart';
+import 'package:learnify/pages/register/registe_controller.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -14,7 +18,9 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return BlocBuilder<RegisterBloc, RegisterStates> (
+      builder: (context, state){
+        return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
@@ -39,22 +45,22 @@ class _RegisterState extends State<Register> {
                       reusableText("User name"),
                       buildTextField("Enter your user name", "name", "user",
                           (value) {
-                        //context.read<SignInBloc>().add(EmailEvent(email: value));
+                        context.read<RegisterBloc>().add(UserNameEvent(value));
                       }),
                       reusableText("Email"),
                       buildTextField(
                           "Enter your email address", "email", "user", (value) {
-                        //context.read<SignInBloc>().add(EmailEvent(email: value));
+                        context.read<RegisterBloc>().add(EmailEvent(value));
                       }),
                       reusableText("Password"),
                       buildTextField("Enter your password", "password", "lock",
                           (value) {
-                        // context.read<SignInBloc>().add(PasswordEvent(password: value));
+                        context.read<RegisterBloc>().add(PasswordEvent(value));
                       }),
                       reusableText("Confirm Password"),
                       buildTextField("Re-enter your password to confirm",
                           "confirmpassword", "lock", (value) {
-                        // context.read<SignInBloc>().add(PasswordEvent(password: value));
+                        context.read<RegisterBloc>().add(RepasswordEvent(value));
                       }),
                     ],
                   ),
@@ -65,7 +71,8 @@ class _RegisterState extends State<Register> {
                       "By creating an account you have agree with our terms and conditions"),
                 ),
                 buildLogInAndRegButton("Sign Up", "login", () {
-                  Navigator.of(context).pushNamed("register");
+                  // Navigator.of(context).pushNamed("register");
+                   RegisterController(context).handleEmailRegister();
                 })
               ],
             ),
@@ -73,5 +80,8 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  
+      },
+      );
   }
 }
